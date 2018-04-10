@@ -1,7 +1,24 @@
+package view;
 
+import controller.FileController;
+import model.SystemFile;
 
 public class UserInterface {
+  private FileController fileController;
+
+  public UserInterface() {
+    fileController = new FileController();
+    fileController.load();
+    fileController.sort();
+
+    String[][] tableData = fileController.generateTableData();
+
+    for (int i = 0; i < tableData.length; i++) {
+      System.out.format("[%s]\t%s\n", tableData[i][0], tableData[i][1]);
+    }
+  }
+
   public static void main(String[] args) {
-    System.out.println(System.getProperty("user.home"));
+    UserInterface ui = new UserInterface();
   }
 }
