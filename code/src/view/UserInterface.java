@@ -9,12 +9,11 @@ public class UserInterface {
   public UserInterface() {
     fileController = new FileController();
     fileController.load();
-    fileController.sort();
 
     String[][] tableData = fileController.generateTableData();
 
     for (int i = 0; i < tableData.length; i++) {
-      System.out.format("[%s]\t%s\n", tableData[i][0], tableData[i][1]);
+      System.out.format("%s     %s\n", tableData[i][0], tableData[i][1]);
     }
   }
 

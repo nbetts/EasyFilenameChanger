@@ -18,17 +18,23 @@ public class FileController {
   public final static String CONFIG_DELIMITER = ",";
 
   private ArrayList<SystemFile> fileList;
-  private int idCounter;
   private boolean isUsingFileExtensions;
   private String currentDirectory;
 
   public FileController() {
     fileList = new ArrayList<>();
-    idCounter = 0;
     isUsingFileExtensions = false;
     currentDirectory = System.getProperty("user.home");
 
     loadConfig();
+  }
+
+  public String getCurrentDirectory() {
+    return currentDirectory;
+  }
+
+  public void setCurrentDirectory(String currentDirectory) {
+    this.currentDirectory = currentDirectory;
   }
 
   public void toggleFileExtensions() {
@@ -37,6 +43,11 @@ public class FileController {
 
   public void load() {
     loadFiles(currentDirectory);
+    Collections.sort(fileList);
+  }
+
+  public void save() {
+    //
   }
 
   private void loadFiles(String directory) {
@@ -48,7 +59,7 @@ public class FileController {
 
     for (int i = 0; i < files.length; i++) {
       if (files[i].isFile()) {
-        fileList.add(new SystemFile(idCounter++, files[i]));
+        fileList.add(new SystemFile(directory, files[i]));
       } else if (files[i].isDirectory()) {
         loadFiles(directory + files[i].getName() + FILE_SEPARATOR);
       }
@@ -60,7 +71,10 @@ public class FileController {
 
     for (int i = 0; i < tableData.length; i++) {
       SystemFile file = fileList.get(i);
-      tableData[i][0] = Integer.toString(file.getId());
+      String subDirectory = file.getSubDirectory();
+      subDirectory = subDirectory.substring(0, subDirectory.length() - 1);
+
+      tableData[i][0] = subDirectory.substring(subDirectory.lastIndexOf(FILE_SEPARATOR) + 1);
       tableData[i][1] = file.getName(isUsingFileExtensions);
       tableData[i][2] = "";
     }
@@ -68,8 +82,16 @@ public class FileController {
     return tableData;
   }
 
-  public void sort() {
-    Collections.sort(fileList);
+  public void addNewFilenames(String[][] tableData) {
+    for (int i = 0; i < tableData.length; i++) {
+      String newName = tableData[i][2];
+
+      if (!newName.isEmpty()) {
+        SystemFile file = fileList.get(i);
+        file.setNewName(newName);
+        fileList.set(i, file);
+      }
+    }
   }
 
   private void loadConfig() {
