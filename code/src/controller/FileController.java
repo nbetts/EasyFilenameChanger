@@ -1,12 +1,6 @@
 package controller;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -14,35 +8,15 @@ import model.SystemFile;
 
 public class FileController {
   public final static String FILE_SEPARATOR = System.getProperty("file.separator");
-  public final static String CONFIG_FILE_PATH = "config.txt";
-  public final static String CONFIG_DELIMITER = ",";
 
   private ArrayList<SystemFile> fileList;
-  private boolean isUsingFileExtensions;
-  private String currentDirectory;
 
   public FileController() {
     fileList = new ArrayList<>();
-    isUsingFileExtensions = false;
-    currentDirectory = System.getProperty("user.home");
-
-    loadConfig();
   }
 
-  public String getCurrentDirectory() {
-    return currentDirectory;
-  }
-
-  public void setCurrentDirectory(String currentDirectory) {
-    this.currentDirectory = currentDirectory;
-  }
-
-  public void toggleFileExtensions() {
-    isUsingFileExtensions = !isUsingFileExtensions;
-  }
-
-  public void load() {
-    loadFiles(currentDirectory);
+  public void load(String directory) {
+    loadFiles(directory);
     Collections.sort(fileList);
   }
 
@@ -66,69 +40,32 @@ public class FileController {
     }
   }
 
-  public String[][] generateTableData() {
-    String[][] tableData = new String[fileList.size()][3];
+  // public String[][] generateTableData() {
+  //   String[][] tableData = new String[fileList.size()][3];
+  //   boolean isUsingFileExtensions = config.getIsUsingFileExtensions();
 
-    for (int i = 0; i < tableData.length; i++) {
-      SystemFile file = fileList.get(i);
-      String subDirectory = file.getSubDirectory();
-      subDirectory = subDirectory.substring(0, subDirectory.length() - 1);
+  //   for (int i = 0; i < tableData.length; i++) {
+  //     SystemFile file = fileList.get(i);
+  //     String subDirectory = file.getSubDirectory();
+  //     subDirectory = subDirectory.substring(0, subDirectory.length() - 1);
 
-      tableData[i][0] = subDirectory.substring(subDirectory.lastIndexOf(FILE_SEPARATOR) + 1);
-      tableData[i][1] = file.getName(isUsingFileExtensions);
-      tableData[i][2] = "";
-    }
+  //     tableData[i][0] = subDirectory.substring(subDirectory.lastIndexOf(FILE_SEPARATOR) + 1);
+  //     tableData[i][1] = file.getName(isUsingFileExtensions);
+  //     tableData[i][2] = "";
+  //   }
 
-    return tableData;
-  }
+  //   return tableData;
+  // }
 
-  public void addNewFilenames(String[][] tableData) {
-    for (int i = 0; i < tableData.length; i++) {
-      String newName = tableData[i][2];
+  // public void addNewFilenames(String[][] tableData) {
+  //   for (int i = 0; i < tableData.length; i++) {
+  //     String newName = tableData[i][2];
 
-      if (!newName.isEmpty()) {
-        SystemFile file = fileList.get(i);
-        file.setNewName(newName);
-        fileList.set(i, file);
-      }
-    }
-  }
-
-  private void loadConfig() {
-    try {
-      BufferedReader reader = new BufferedReader(new FileReader(CONFIG_FILE_PATH));
-      String[] config = reader.readLine().split(CONFIG_DELIMITER);
-      reader.close();
-
-      isUsingFileExtensions = Boolean.parseBoolean(config[0]);
-      File directory = new File(config[1]);
-
-      if (directory.exists() && directory.isDirectory()) {
-        currentDirectory = config[1];
-      } else {
-        throw new Exception("Cannot find " + config[1]);
-      }
-    } catch (FileNotFoundException e) {
-      System.err.println("Error: cannot find " + CONFIG_FILE_PATH);
-      System.exit(-1);
-    } catch (IOException e) {
-      System.err.println("Error: cannot read " + CONFIG_FILE_PATH);
-      System.exit(-1);
-    } catch (Exception e) {
-      System.err.println("Error: cannot parse " + CONFIG_FILE_PATH + ", " + e.getMessage());
-      System.exit(-1);
-    }
-  }
-
-  public void saveConfig() {
-    try {
-      BufferedWriter writer = new BufferedWriter(new FileWriter(CONFIG_FILE_PATH));
-      writer.write(isUsingFileExtensions + CONFIG_DELIMITER + currentDirectory);
-      writer.close();
-    } catch (FileNotFoundException e) {
-      System.err.println("Error: cannot find " + CONFIG_FILE_PATH);
-    } catch (IOException e) {
-      System.err.println("Error: cannot write " + CONFIG_FILE_PATH);
-    }
-  }
+  //     if (!newName.isEmpty()) {
+  //       SystemFile file = fileList.get(i);
+  //       file.setNewName(newName);
+  //       fileList.set(i, file);
+  //     }
+  //   }
+  // }
 }
