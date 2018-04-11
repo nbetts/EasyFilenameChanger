@@ -1,19 +1,14 @@
 package view;
 
-import controller.ConfigController;
 import controller.FileController;
-// import model.SystemFile;
 
 public class UserInterface {
-  private ConfigController configController;
   private FileController fileController;
 
   public UserInterface() {
-    configController = new ConfigController();
-    configController.load();
 
     fileController = new FileController();
-    fileController.load(configController.config.getCurrentDirectory());
+    fileController.load();
 
     // String[][] tableData = fileController.generateTableData();
 

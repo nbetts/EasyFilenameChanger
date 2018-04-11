@@ -1,43 +1,40 @@
 package controller;
 
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 
-import model.SystemFile;
+import model.File;
 
 public class FileController {
   public final static String FILE_SEPARATOR = System.getProperty("file.separator");
 
-  private ArrayList<SystemFile> fileList;
+  private ConfigController configController;
+  private ArrayList<File> fileList;
 
   public FileController() {
+    configController = new ConfigController();
+    configController.load();
+
     fileList = new ArrayList<>();
   }
 
-  public void load(String directory) {
-    loadFiles(directory);
-    Collections.sort(fileList);
+  public void load() {
+    String currentDirectory = configController.config.getCurrentDirectory();
+
+    try {
+      Files.walk(Paths.get(currentDirectory))
+        .filter(Files::isRegularFile)
+        .forEach((Path path) -> fileList.add(new File(path)));
+    } catch (IOException e) {
+      System.err.println(e.getMessage());
+    }
   }
 
   public void save() {
     //
-  }
-
-  private void loadFiles(String directory) {
-    if (!directory.substring(directory.length() - 1).equals(FILE_SEPARATOR)) {
-      directory += FILE_SEPARATOR;
-    }
-
-    File[] files = new File(directory).listFiles();
-
-    for (int i = 0; i < files.length; i++) {
-      if (files[i].isFile()) {
-        fileList.add(new SystemFile(directory, files[i]));
-      } else if (files[i].isDirectory()) {
-        loadFiles(directory + files[i].getName() + FILE_SEPARATOR);
-      }
-    }
   }
 
   // public String[][] generateTableData() {
