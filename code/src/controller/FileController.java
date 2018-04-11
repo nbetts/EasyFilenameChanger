@@ -58,12 +58,14 @@ public class FileController {
   }
 
   public void processTableData(String[][] tableData) {
+    boolean isUsingFileExtensions = configController.config.getIsUsingFileExtensions();
+
     for (int i = 0; i < tableData.length; i++) {
       String newName = tableData[i][2];
 
       if (!newName.isEmpty()) {
         File file = fileList.get(i);
-        file.setNewName(newName);
+        file.setNewName(isUsingFileExtensions, newName);
         fileList.set(i, file);
       }
     }

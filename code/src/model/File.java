@@ -3,6 +3,8 @@ package model;
 import java.nio.file.Path;
 
 public class File {
+  public static final String FILE_EXTENSION = ".";
+
   private Path path;
   private String newName;
 
@@ -23,11 +25,7 @@ public class File {
     String name = path.getFileName().toString();
 
     if (!isUsingFileExtensions) {
-      int extensionIndex = name.lastIndexOf(".");
-
-      if (extensionIndex > 0) {
-        name = name.substring(0, extensionIndex);
-      }
+      name = removeFileExtension(name);
     }
 
     return name;
@@ -37,7 +35,29 @@ public class File {
     return newName;
   }
 
-  public void setNewName(String newName) {
-    this.newName = newName;
+  public void setNewName(boolean isUsingFileExtensions, String newName) {
+    String name = newName;
+
+    if (!isUsingFileExtensions) {
+      name = removeFileExtension(name);
+      name += getOriginalFileExtension();
+    }
+
+    this.newName = name;
+  }
+
+  private String getOriginalFileExtension() {
+    String name = path.getFileName().toString();
+    return name.substring(name.lastIndexOf(FILE_EXTENSION));
+  }
+
+  private String removeFileExtension(String name) {
+    int extensionIndex = name.lastIndexOf(FILE_EXTENSION);
+
+    if (extensionIndex > 0) {
+      return name.substring(0, extensionIndex);
+    }
+
+    return name;
   }
 }
