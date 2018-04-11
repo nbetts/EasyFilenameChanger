@@ -57,15 +57,15 @@ public class FileController {
     return tableData;
   }
 
-  // public void addNewFilenames(String[][] tableData) {
-  //   for (int i = 0; i < tableData.length; i++) {
-  //     String newName = tableData[i][2];
+  public void processTableData(String[][] tableData) {
+    for (int i = 0; i < tableData.length; i++) {
+      String newName = tableData[i][2];
 
-  //     if (!newName.isEmpty()) {
-  //       SystemFile file = fileList.get(i);
-  //       file.setNewName(newName);
-  //       fileList.set(i, file);
-  //     }
-  //   }
-  // }
+      if (!newName.isEmpty()) {
+        File file = fileList.get(i);
+        file.setNewName(newName);
+        fileList.set(i, file);
+      }
+    }
+  }
 }
