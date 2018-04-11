@@ -16,12 +16,12 @@ public class FileController {
 
   public FileController() {
     configController = new ConfigController();
-    configController.load();
-
     fileList = new ArrayList<>();
   }
 
   public void load() {
+    configController.load();
+
     String currentDirectory = configController.config.getCurrentDirectory();
 
     try {
@@ -34,7 +34,20 @@ public class FileController {
   }
 
   public void save() {
-    //
+    configController.save();
+
+    for (File file : fileList) {
+      String newName = file.getNewName();
+      Path path = file.getPath();
+
+      if (!newName.isEmpty()) {
+        try {
+          Files.move(path, path.resolveSibling(newName));
+        } catch (IOException e) {
+          System.err.println(e.getMessage());
+        }
+      }
+    }
   }
 
   public String[][] generateTableData() {
