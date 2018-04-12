@@ -6,7 +6,7 @@ public class Config {
 
   public Config() {
     currentDirectory = System.getProperty("user.home");
-    isUsingFileExtensions = false;
+    isUsingFileExtensions = true;
   }
 
   public String getCurrentDirectory() {

@@ -3,7 +3,7 @@ package model;
 import java.nio.file.Path;
 
 public class File {
-  public static final String FILE_EXTENSION = ".";
+  public static final char FILE_EXTENSION_SYMBOL = '.';
 
   private Path path;
   private String newName;
@@ -46,13 +46,22 @@ public class File {
     this.newName = name;
   }
 
+  private boolean isFilenameValid(String newName) {
+    // Windows: [0-31 ascii] <>:"\/|?*
+    // Unix: [0 ascii] /
+    // if (System.getProperty("os.name").startsWith("Windows")) {
+
+    // }
+    return true;
+  }
+
   private String getOriginalFileExtension() {
     String name = path.getFileName().toString();
-    return name.substring(name.lastIndexOf(FILE_EXTENSION));
+    return name.substring(name.lastIndexOf(FILE_EXTENSION_SYMBOL));
   }
 
   private String removeFileExtension(String name) {
-    int extensionIndex = name.lastIndexOf(FILE_EXTENSION);
+    int extensionIndex = name.lastIndexOf(FILE_EXTENSION_SYMBOL);
 
     if (extensionIndex > 0) {
       return name.substring(0, extensionIndex);
