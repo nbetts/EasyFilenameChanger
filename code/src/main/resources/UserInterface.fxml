@@ -1,0 +1,38 @@
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.cell.*?>
+
+<GridPane fx:controller="view.UserInterface"
+          xmlns:fx="http://javafx.com/fxml" alignment="center"
+          hgap="10" vgap="10">
+
+    <TableView fx:id="tableView" prefHeight="40"
+               GridPane.columnIndex="0" GridPane.rowIndex="0">
+        <columns>
+             <TableColumn fx:id="firstColumn" text="Parent Directory" prefWidth="250">
+                <cellValueFactory>
+                    <PropertyValueFactory property="parentDirectory" />
+                </cellValueFactory>
+             </TableColumn>
+             <TableColumn text="File Name" prefWidth="250">
+                <cellValueFactory>
+                    <PropertyValueFactory property="fileName" />
+                </cellValueFactory>
+             </TableColumn>
+             <TableColumn text="New Name" prefWidth="250">
+                 <cellValueFactory>
+                    <PropertyValueFactory property="newName" />
+                 </cellValueFactory>
+            </TableColumn>
+        </columns>
+        <!-- <items>
+            <FXCollections fx:factory="observableArrayList">
+            </FXCollections>
+        </items>
+        <sortOrder>
+            <fx:reference source="firstColumn"/>
+        </sortOrder> -->
+    </TableView>
+</GridPane>
