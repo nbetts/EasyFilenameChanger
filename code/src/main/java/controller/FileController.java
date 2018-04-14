@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import model.File;
+import model.TableFile;
 
 public class FileController {
   public final static String FILE_SEPARATOR = System.getProperty("file.separator");
@@ -50,37 +51,36 @@ public class FileController {
     }
   }
 
-  public String[][] generateTableData() {
-    String[][] tableData = new String[fileList.size()][3];
-
+  public ArrayList<TableFile> generateTableData() {
     int currentDirectoryLength = configController.config.getCurrentDirectory().length();
     boolean isUsingFileExtensions = configController.config.getIsUsingFileExtensions();
+    String parentDirectory, fileName;
 
-    for (int i = 0; i < tableData.length; i++) {
-      File file = fileList.get(i);
-      String parentDirectory = file.getPath().toString();
+    ArrayList<TableFile> tableFileList = new ArrayList<>();
+
+    for (File file : fileList) {
+      parentDirectory = file.getPath().toString();
       parentDirectory = parentDirectory.substring(currentDirectoryLength,
                                         parentDirectory.lastIndexOf(FILE_SEPARATOR));
+      fileName = file.getName(isUsingFileExtensions);
 
-      tableData[i][0] = parentDirectory;
-      tableData[i][1] = file.getName(isUsingFileExtensions);
-      tableData[i][2] = "";
+      tableFileList.add(new TableFile(parentDirectory, fileName));
     }
 
-    return tableData;
+    return tableFileList;
   }
 
-  public void processTableData(String[][] tableData) {
-    boolean isUsingFileExtensions = configController.config.getIsUsingFileExtensions();
+  // public void processTableData(String[][] tableData) {
+  //   boolean isUsingFileExtensions = configController.config.getIsUsingFileExtensions();
 
-    for (int i = 0; i < tableData.length; i++) {
-      String newName = tableData[i][2];
+  //   for (int i = 0; i < tableData.length; i++) {
+  //     String newName = tableData[i][2];
 
-      if (!newName.isEmpty()) {
-        File file = fileList.get(i);
-        file.setNewName(isUsingFileExtensions, newName);
-        fileList.set(i, file);
-      }
-    }
-  }
+  //     if (!newName.isEmpty()) {
+  //       File file = fileList.get(i);
+  //       file.setNewName(isUsingFileExtensions, newName);
+  //       fileList.set(i, file);
+  //     }
+  //   }
+  // }
 }
