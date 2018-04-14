@@ -10,12 +10,12 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import controller.FileController;
-import model.TableFile;
+import model.File;
 
 public class UserInterface extends Application {
   private FileController fileController;
 
-  @FXML private TableView<TableFile> tableView;
+  @FXML private TableView<File> tableView;
 
   public UserInterface() {
     fileController = new FileController();
@@ -23,7 +23,7 @@ public class UserInterface extends Application {
   }
 
   @FXML private void initialize() {
-    tableView.getItems().setAll(fileController.generateTableData());
+    tableView.getItems().setAll(fileController.getFileList());
     tableView.sort();
   }
 

@@ -1,41 +1,46 @@
 package model;
 
 import java.nio.file.Path;
+import javafx.beans.property.SimpleStringProperty;
 
 public class File {
   public static final char FILE_EXTENSION_SYMBOL = '.';
 
-  private Path path;
-  private String newName;
+  private final Path path;
+  private boolean isUsingFileExtensions;
 
-  public File(Path path) {
+  private final SimpleStringProperty parentDirectory;
+  private final SimpleStringProperty fileName;
+  private final SimpleStringProperty newName;
+
+  public File(Path path, boolean isUsingFileExtensions, String parentDirectory) {
     this.path = path;
-    this.newName = "";
+    this.isUsingFileExtensions = isUsingFileExtensions;
+
+    this.parentDirectory = new SimpleStringProperty(parentDirectory);
+    this.fileName = new SimpleStringProperty(path.getFileName().toString());
+    this.newName = new SimpleStringProperty("");
   }
 
   public Path getPath() {
     return path;
   }
 
-  public void setPath(Path path) {
-    this.path = path;
+  public String getParentDirectory() {
+    return parentDirectory.get();
   }
 
-  public String getName(boolean isUsingFileExtensions) {
-    String name = path.getFileName().toString();
+  public String getFileName() {
+    String name = fileName.get();
 
-    if (!isUsingFileExtensions) {
-      name = removeFileExtension(name);
-    }
-
-    return name;
+    return isUsingFileExtensions ? name : removeFileExtension(name);
   }
 
   public String getNewName() {
-    return newName;
+    return newName.get();
   }
 
-  public void setNewName(boolean isUsingFileExtensions, String newName) {
+  public void setNewName(String newName) {
     String name = newName;
 
     if (!isUsingFileExtensions) {
@@ -43,7 +48,7 @@ public class File {
       name += getOriginalFileExtension();
     }
 
-    this.newName = name;
+    this.newName.set(name);
   }
 
   private boolean isFilenameValid(String newName) {
