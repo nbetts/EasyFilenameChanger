@@ -23,6 +23,18 @@ public class FileController {
     return fileList;
   }
 
+  public boolean getIsUsingFileExtensions() {
+    return configController.getIsUsingFileExtensions();
+  }
+
+  public void setIsUsingFileExtensions(boolean isUsingFileExtensions) {
+    configController.setIsUsingFileExtensions(isUsingFileExtensions);
+
+    for (File file : fileList) {
+      file.setIsUsingFileExtensions(isUsingFileExtensions);
+    }
+  }
+
   public String getCurrentDirectory() {
     return configController.getCurrentDirectory();
   }
