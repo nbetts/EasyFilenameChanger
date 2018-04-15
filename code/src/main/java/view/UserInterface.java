@@ -1,7 +1,6 @@
 package view;
 
 import javafx.application.Application;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,8 +28,6 @@ public class UserInterface extends Application {
 
   public UserInterface() {
     fileController = new FileController();
-    fileController.load();
-
     directoryChooser = new DirectoryChooser();
     directoryChooser.setTitle("Change Directory");
   }

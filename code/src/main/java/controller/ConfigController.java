@@ -5,20 +5,15 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class ConfigController {
-  public final static String CONFIG_FILE_NAME = "config.txt";
-  public final static String CONFIG_FILE_DELIMITER = ",";
   public final static String DEFAULT_CURRENT_DIRECTORY = System.getProperty("user.home");
+  public final static String CONFIG_FILE_DELIMITER = ",";
 
   private Path configPath;
   private boolean isUsingFileExtensions;
   private String currentDirectory;
 
   public ConfigController() {
-    try {
-      configPath = Paths.get(this.getClass().getClassLoader().getResource(CONFIG_FILE_NAME).toURI());
-    } catch (Exception e) {
-      configPath = null;
-    }
+    configPath = Paths.get("config.txt");
   }
 
   public boolean getIsUsingFileExtensions() {
@@ -53,6 +48,7 @@ public class ConfigController {
     } catch (Exception e) {
       isUsingFileExtensions = false;
       currentDirectory = DEFAULT_CURRENT_DIRECTORY;
+      save();
     }
   }
 

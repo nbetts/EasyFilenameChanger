@@ -1,8 +1,7 @@
-apply plugin: 'java'
-apply plugin: 'application'
+plugins {
+  id 'com.github.johnrengelman.shadow' version '2.0.3'
+  id 'java'
+}
 
-version = 0.3
 sourceCompatibility = 1.8
-
-mainClassName = 'view.UserInterface'
-description = 'Easily change the names of all files in a directory.'
+shadowJar.baseName = 'EasyFilenameChanger'
