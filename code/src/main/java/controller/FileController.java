@@ -22,9 +22,9 @@ public class FileController {
   public void load() {
     configController.load();
 
-    String currentDirectory = configController.config.getCurrentDirectory();
+    boolean isUsingFileExtensions = configController.getIsUsingFileExtensions();
+    String currentDirectory = configController.getCurrentDirectory();
     int currentDirectoryLength = currentDirectory.length();
-    boolean isUsingFileExtensions = configController.config.getIsUsingFileExtensions();
 
     try {
       Files.walk(Paths.get(currentDirectory))

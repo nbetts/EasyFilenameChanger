@@ -26,6 +26,10 @@ public class File {
     return path;
   }
 
+  public void setIsUsingFileExtensions(boolean isUsingFileExtensions) {
+    this.isUsingFileExtensions = isUsingFileExtensions;
+  }
+
   public String getParentDirectory() {
     return parentDirectory.get();
   }

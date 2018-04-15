@@ -1,61 +1,59 @@
 package controller;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-
-import model.Config;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class ConfigController {
-  public final static String CONFIG_FILE_PATH = "config.txt";
-  public final static String CONFIG_DELIMITER = ",";
+  public final static String CONFIG_FILE_NAME = "config.txt";
+  public final static String CONFIG_FILE_DELIMITER = ",";
+  public final static String DEFAULT_CURRENT_DIRECTORY = System.getProperty("user.home");
 
-  public Config config;
+  private Path configPath;
+  private boolean isUsingFileExtensions;
+  private String currentDirectory;
 
-  public ConfigController() {
-    config = new Config();
+  public boolean getIsUsingFileExtensions() {
+    return isUsingFileExtensions;
+  }
+
+  public void setIsUsingFileExtensions(boolean isUsingFileExtensions) {
+    this.isUsingFileExtensions = isUsingFileExtensions;
+  }
+
+  public String getCurrentDirectory() {
+    return currentDirectory;
+  }
+
+  public void setCurrentDirectory(String currentDirectory) {
+    Path directory = Paths.get(currentDirectory);
+
+    if (Files.exists(directory) && Files.isDirectory(directory)) {
+      this.currentDirectory = directory.toString();
+    } else {
+      this.currentDirectory = DEFAULT_CURRENT_DIRECTORY;
+    }
   }
 
   public void load() {
     try {
-      BufferedReader reader = new BufferedReader(new FileReader(CONFIG_FILE_PATH));
-      String[] configProperties = reader.readLine().split(CONFIG_DELIMITER);
-      reader.close();
+      configPath = Paths.get(this.getClass().getClassLoader().getResource(CONFIG_FILE_NAME).toURI());
 
-      config.setIsUsingFileExtensions(Boolean.parseBoolean(configProperties[0]));
+      String line = Files.lines(configPath).findFirst().get();
+      String[] configProperties = line.split(CONFIG_FILE_DELIMITER);
 
-      File directory = new File(configProperties[1]);
-
-      if (directory.exists() && directory.isDirectory()) {
-        config.setCurrentDirectory(configProperties[1]);
-      } else {
-        throw new Exception("Cannot find " + configProperties[1]);
-      }
-    } catch (FileNotFoundException e) {
-      System.err.println("Error: cannot find " + CONFIG_FILE_PATH);
-      System.exit(-1);
-    } catch (IOException e) {
-      System.err.println("Error: cannot read " + CONFIG_FILE_PATH);
-      System.exit(-1);
+      isUsingFileExtensions = Boolean.parseBoolean(configProperties[0]);
+      setCurrentDirectory(configProperties[1]);
     } catch (Exception e) {
-      System.err.println("Error: cannot parse " + CONFIG_FILE_PATH + ", " + e.getMessage());
-      System.exit(-1);
+      isUsingFileExtensions = false;
+      currentDirectory = DEFAULT_CURRENT_DIRECTORY;
     }
   }
 
   public void save() {
     try {
-      BufferedWriter writer = new BufferedWriter(new FileWriter(CONFIG_FILE_PATH));
-      writer.write(config.getIsUsingFileExtensions() + CONFIG_DELIMITER + config.getCurrentDirectory());
-      writer.close();
-    } catch (FileNotFoundException e) {
-      System.err.println("Error: cannot find " + CONFIG_FILE_PATH);
-    } catch (IOException e) {
-      System.err.println("Error: cannot write " + CONFIG_FILE_PATH);
-    }
+      String configProperties = isUsingFileExtensions + CONFIG_FILE_DELIMITER + currentDirectory;
+      Files.write(configPath, configProperties.getBytes());
+    } catch (Exception e) {}
   }
 }
