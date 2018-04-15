@@ -1,10 +1,11 @@
 plugins {
-  id 'com.github.johnrengelman.shadow' version '2.0.3'
   id 'java'
+  id 'application'
+  id 'com.github.johnrengelman.shadow' version '2.0.3'
 }
 
+mainClassName = 'view.UserInterface'
 sourceCompatibility = 1.8
-jar.manifest.attributes('Main-Class': 'view.UserInterface')
 
 shadowJar {
   baseName = 'EasyFilenameChanger'
@@ -14,3 +15,4 @@ shadowJar {
 task buildStandalone(type: Copy) {
   from shadowJar into '..'
 }
+buildStandalone.finalizedBy clean

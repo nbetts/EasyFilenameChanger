@@ -1,4 +1,4 @@
 *.class
 .gradle/
 code/build/
-config.txt
+**/config.txt
