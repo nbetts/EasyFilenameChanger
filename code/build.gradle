@@ -4,4 +4,8 @@ plugins {
 }
 
 sourceCompatibility = 1.8
-shadowJar.baseName = 'EasyFilenameChanger'
+
+shadowJar {
+  baseName = 'EasyFilenameChanger'
+  classifier = null
+}
