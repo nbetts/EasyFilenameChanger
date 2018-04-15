@@ -21,21 +21,19 @@ public class UserInterface extends Application {
   private DirectoryChooser directoryChooser;
   private Stage stage;
 
-  @FXML private Button changeCurrentDirectoryButton;
+  @FXML private Button chooseCurrentDirectoryButton;
   @FXML private CheckBox isUsingFileExtensionsCheckBox;
-  @FXML private Label currentDirectory;
-  @FXML private TableView<File> tableView;
+  @FXML private Label currentDirectoryLabel;
+  @FXML private TableView<File> fileTable;
 
   public UserInterface() {
     fileController = new FileController();
     directoryChooser = new DirectoryChooser();
-    directoryChooser.setTitle("Change Directory");
+    directoryChooser.setTitle("Choose Directory");
   }
 
   @FXML private void initialize() {
     isUsingFileExtensionsCheckBox.setSelected(fileController.getIsUsingFileExtensions());
-    currentDirectory.setText(fileController.getCurrentDirectory());
-    updateTable();
   }
 
   @FXML protected void toggleFileExtensions(ActionEvent event) {
@@ -43,19 +41,23 @@ public class UserInterface extends Application {
     updateTable();
   }
 
-  @FXML protected void changeCurrentDirectory(ActionEvent event) {
-    directoryChooser.setInitialDirectory(new java.io.File(fileController.getCurrentDirectory()));
+  @FXML protected void chooseCurrentDirectory(ActionEvent event) {
+    String currentDirectory = fileController.getCurrentDirectory();
+    directoryChooser.setInitialDirectory(new java.io.File(currentDirectory));
     java.io.File directory = directoryChooser.showDialog(stage);
 
     if (directory != null) {
+      currentDirectoryLabel.setText("Loading...");
       fileController.setCurrentDirectory(directory.toString());
+      currentDirectoryLabel.setText(fileController.getCurrentDirectory() +
+                                    " (" + fileController.getFileCount() + " files)");
       updateTable();
     }
   }
 
   private void updateTable() {
-    tableView.getItems().setAll(fileController.getFileList());
-    tableView.sort();
+    fileTable.getItems().setAll(fileController.getFileList());
+    fileTable.sort();
   }
 
   @Override

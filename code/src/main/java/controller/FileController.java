@@ -24,6 +24,10 @@ public class FileController {
     return fileList;
   }
 
+  public int getFileCount() {
+    return fileList.size();
+  }
+
   public boolean getIsUsingFileExtensions() {
     return configController.getIsUsingFileExtensions();
   }
