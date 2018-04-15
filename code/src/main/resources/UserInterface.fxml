@@ -1,10 +1,11 @@
+<?import javafx.geometry.Insets ?>
 <?import javafx.scene.control.Button ?>
 <?import javafx.scene.control.cell.PropertyValueFactory ?>
+<?import javafx.scene.control.cell.TextFieldTableCell ?>
 <?import javafx.scene.control.CheckBox ?>
 <?import javafx.scene.control.Label ?>
 <?import javafx.scene.control.TableColumn ?>
 <?import javafx.scene.control.TableView ?>
-<?import javafx.geometry.Insets ?>
 <?import javafx.scene.layout.GridPane ?>
 
 <GridPane fx:controller="view.UserInterface" xmlns:fx="http://javafx.com/fxml"
@@ -25,27 +26,30 @@
                   GridPane.rowIndex="1" GridPane.columnIndex="0"></CheckBox>
     </GridPane>
 
-    <TableView fx:id="fileTable" prefWidth="918" prefHeight="500"
+    <TableView fx:id="fileTable" editable="true" prefWidth="918" prefHeight="500"
                GridPane.rowIndex="1" GridPane.columnIndex="0">
         <columns>
-             <TableColumn fx:id="parentDirectory" text="Parent Directory" prefWidth="300">
+             <TableColumn fx:id="parentDirectoryColumn" text="Parent Directory" prefWidth="300">
                 <cellValueFactory>
-                    <PropertyValueFactory property="parentDirectory" />
+                    <PropertyValueFactory property="parentDirectory"/>
                 </cellValueFactory>
              </TableColumn>
-             <TableColumn fx:id="fileName" text="File Name" prefWidth="300">
+             <TableColumn fx:id="fileNameColumn" text="File Name" prefWidth="300">
                 <cellValueFactory>
-                    <PropertyValueFactory property="fileName" />
+                    <PropertyValueFactory property="fileName"/>
                 </cellValueFactory>
              </TableColumn>
-             <TableColumn fx:id="newName" text="New Name" prefWidth="300">
+             <TableColumn fx:id="newNameColumn" text="New Name" prefWidth="300">
                  <cellValueFactory>
-                    <PropertyValueFactory property="newName" />
+                    <PropertyValueFactory property="newName"/>
                  </cellValueFactory>
+                 <cellFactory>
+                    <TextFieldTableCell fx:factory="forTableColumn"/>
+                </cellFactory>
             </TableColumn>
         </columns>
         <sortOrder>
-            <fx:reference source="parentDirectory"/>
+            <fx:reference source="parentDirectoryColumn"/>
         </sortOrder>
     </TableView>
 </GridPane>

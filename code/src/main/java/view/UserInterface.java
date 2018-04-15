@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -25,6 +26,7 @@ public class UserInterface extends Application {
   @FXML private CheckBox isUsingFileExtensionsCheckBox;
   @FXML private Label currentDirectoryLabel;
   @FXML private TableView<File> fileTable;
+  @FXML private TableColumn<File, String> newNameColumn;
 
   public UserInterface() {
     fileController = new FileController();
@@ -34,6 +36,7 @@ public class UserInterface extends Application {
 
   @FXML private void initialize() {
     isUsingFileExtensionsCheckBox.setSelected(fileController.getIsUsingFileExtensions());
+    newNameColumn.setOnEditCommit(col -> col.getRowValue().setNewName(col.getNewValue()));
   }
 
   @FXML protected void toggleFileExtensions(ActionEvent event) {
