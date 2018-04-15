@@ -13,6 +13,14 @@ public class ConfigController {
   private boolean isUsingFileExtensions;
   private String currentDirectory;
 
+  public ConfigController() {
+    try {
+      configPath = Paths.get(this.getClass().getClassLoader().getResource(CONFIG_FILE_NAME).toURI());
+    } catch (Exception e) {
+      configPath = null;
+    }
+  }
+
   public boolean getIsUsingFileExtensions() {
     return isUsingFileExtensions;
   }
@@ -37,8 +45,6 @@ public class ConfigController {
 
   public void load() {
     try {
-      configPath = Paths.get(this.getClass().getClassLoader().getResource(CONFIG_FILE_NAME).toURI());
-
       String line = Files.lines(configPath).findFirst().get();
       String[] configProperties = line.split(CONFIG_FILE_DELIMITER);
 
