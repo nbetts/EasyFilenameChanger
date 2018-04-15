@@ -16,7 +16,6 @@ public class FileController {
 
   public FileController() {
     configController = new ConfigController();
-    fileList = new ArrayList<>();
   }
 
   public ArrayList<File> getFileList() {
@@ -29,6 +28,7 @@ public class FileController {
 
   public void setIsUsingFileExtensions(boolean isUsingFileExtensions) {
     configController.setIsUsingFileExtensions(isUsingFileExtensions);
+    configController.save();
 
     for (File file : fileList) {
       file.setIsUsingFileExtensions(isUsingFileExtensions);
@@ -39,8 +39,15 @@ public class FileController {
     return configController.getCurrentDirectory();
   }
 
+  public void setCurrentDirectory(String directory) {
+    configController.setCurrentDirectory(directory);
+    configController.save();
+    load();
+  }
+
   public void load() {
     configController.load();
+    fileList = new ArrayList<>();
 
     boolean isUsingFileExtensions = configController.getIsUsingFileExtensions();
     String currentDirectory = configController.getCurrentDirectory();

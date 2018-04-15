@@ -11,8 +11,11 @@
           hgap="10" vgap="10">
 
     <GridPane fx:id="configPanel" GridPane.rowIndex="0" GridPane.columnIndex="0">
-        <Label text="Current Directory:" GridPane.rowIndex="0" GridPane.columnIndex="0"></Label>
-        <Label fx:id="currentDirectory" text="" GridPane.rowIndex="0" GridPane.columnIndex="1"></Label>
+        <Button fx:id="changeCurrentDirectoryButton" text="Change Directory..."
+                onAction="#changeCurrentDirectory"
+                GridPane.rowIndex="0" GridPane.columnIndex="0"></Button>
+        <Label fx:id="currentDirectory" text=""
+               GridPane.rowIndex="0" GridPane.columnIndex="1"></Label>
         <CheckBox fx:id="isUsingFileExtensionsCheckBox" text="Include file extensions"
                   onAction="#toggleFileExtensions"
                   GridPane.rowIndex="1" GridPane.columnIndex="0"></CheckBox>
