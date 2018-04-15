@@ -1,8 +1,8 @@
-<?import javafx.collections.FXCollections?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.cell.*?>
+<?import javafx.collections.FXCollections ?>
+<?import javafx.scene.control.cell.PropertyValueFactory ?>
+<?import javafx.scene.control.TableColumn ?>
+<?import javafx.scene.control.TableView ?>
+<?import javafx.scene.layout.GridPane ?>
 
 <GridPane fx:controller="view.UserInterface"
           xmlns:fx="http://javafx.com/fxml" alignment="center"

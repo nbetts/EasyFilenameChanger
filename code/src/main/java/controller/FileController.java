@@ -1,9 +1,9 @@
 package controller;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import model.File;
@@ -17,6 +17,14 @@ public class FileController {
   public FileController() {
     configController = new ConfigController();
     fileList = new ArrayList<>();
+  }
+
+  public ArrayList<File> getFileList() {
+    return fileList;
+  }
+
+  public String getCurrentDirectory() {
+    return configController.getCurrentDirectory();
   }
 
   public void load() {
@@ -56,9 +64,5 @@ public class FileController {
         }
       }
     }
-  }
-
-  public ArrayList<File> getFileList() {
-    return fileList;
   }
 }
