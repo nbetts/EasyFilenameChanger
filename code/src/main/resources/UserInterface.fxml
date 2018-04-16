@@ -21,9 +21,13 @@
                 GridPane.rowIndex="0" GridPane.columnIndex="0"></Button>
         <Label fx:id="currentDirectoryLabel" text="Start by choosing a directory."
                GridPane.rowIndex="0" GridPane.columnIndex="1"></Label>
+
+        <Button fx:id="updateFilesButton" text="Update Files"
+                onAction="#updateFiles"
+                GridPane.rowIndex="1" GridPane.columnIndex="0"></Button>
         <CheckBox fx:id="isUsingFileExtensionsCheckBox" text="Include file extensions"
                   onAction="#toggleFileExtensions"
-                  GridPane.rowIndex="1" GridPane.columnIndex="0"></CheckBox>
+                  GridPane.rowIndex="1" GridPane.columnIndex="1"></CheckBox>
     </GridPane>
 
     <TableView fx:id="fileTable" editable="true" prefWidth="918" prefHeight="500"

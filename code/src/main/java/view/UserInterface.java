@@ -4,7 +4,10 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
@@ -21,9 +24,11 @@ import controller.FileController;
 import model.File;
 
 public class UserInterface extends Application {
+  private boolean isInitiallyLoaded;
   private FileController fileController;
   private DirectoryChooser directoryChooser;
   private Stage stage;
+  private Alert updateFilesAlert;
 
   @FXML private Button chooseCurrentDirectoryButton;
   @FXML private CheckBox isUsingFileExtensionsCheckBox;
@@ -32,9 +37,14 @@ public class UserInterface extends Application {
   @FXML private TableColumn<File, String> newNameColumn;
 
   public UserInterface() {
+    isInitiallyLoaded = false;
     fileController = new FileController();
     directoryChooser = new DirectoryChooser();
     directoryChooser.setTitle("Choose Directory");
+
+    updateFilesAlert = new Alert(AlertType.CONFIRMATION);
+    updateFilesAlert.setTitle("Confirm Filename Changes");
+    updateFilesAlert.setHeaderText("Are you sure you want to update file(s)?");
   }
 
   @FXML private void initialize() {
@@ -58,6 +68,17 @@ public class UserInterface extends Application {
       currentDirectoryLabel.setText(fileController.getCurrentDirectory() +
                                     " (" + fileController.getFileCount() + " files)");
       updateTable();
+      isInitiallyLoaded = true;
+    }
+  }
+
+  @FXML protected void updateFiles(ActionEvent event) {
+    if (isInitiallyLoaded) {
+      if (updateFilesAlert.showAndWait().get() == ButtonType.OK) {
+        fileController.save();
+        fileController.load();
+        updateTable();
+      }
     }
   }
 
@@ -75,7 +96,7 @@ public class UserInterface extends Application {
 
   // Adapted from https://stackoverflow.com/a/40677710.
   private <T> void addTooltipToColumnCells(TableColumn<File, T> column, boolean isNewNameColumn) {
-    String newNameTooltip = "Double click to edit new name.";
+    String newNameTooltip = "Double click to edit new name";
 
     Callback<TableColumn<File, T>, TableCell<File, T>> existingCellFactory = column.getCellFactory();
 
