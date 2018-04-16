@@ -1,7 +1,7 @@
 # Easy Filename Changer
 Easily change the names of files in a directory.
 
-![See /resources/screenshot.jpg for an example of the program running.](resources/screenshot.jpg "Screenshot example")
+![See /resources/screenshot.jpg for an example of the program running.](resources/screenshot.png "Screenshot example")
 
 ## Using the program
 Double click `EasyFilenameChanger.jar` to run the program.
