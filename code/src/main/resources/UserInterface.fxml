@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.GridPane ?>
 
 <GridPane fx:controller="view.UserInterface" xmlns:fx="http://javafx.com/fxml"
-          alignment="center" hgap="10" vgap="10">
+          alignment="center" hgap="10" vgap="10" stylesheets="UserInterface.css">
     <padding><Insets top="0" right="1" bottom="1" left="1"/></padding>
 
     <GridPane fx:id="configPanel" hgap="10" vgap="10"

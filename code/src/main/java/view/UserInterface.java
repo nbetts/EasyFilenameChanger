@@ -98,7 +98,7 @@ public class UserInterface extends Application {
   public void start(Stage primaryStage) throws Exception {
     Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("UserInterface.fxml"));
     stage = primaryStage;
-    stage.setTitle("EasyFilenameChanger");
+    stage.setTitle("Easy Filename Changer");
     stage.setScene(new Scene(root));
     stage.show();
   }
