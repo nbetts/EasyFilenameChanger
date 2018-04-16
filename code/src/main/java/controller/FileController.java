@@ -75,7 +75,7 @@ public class FileController {
 
   public void save() {
     for (File file : fileList) {
-      String newName = file.getNewName();
+      String newName = file.getNewNameWithExtension();
       Path path = file.getPath();
 
       if (!newName.isEmpty()) {

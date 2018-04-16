@@ -29,6 +29,7 @@ public class UserInterface extends Application {
   private DirectoryChooser directoryChooser;
   private Stage stage;
   private Alert updateFilesAlert;
+  private Alert invalidFilenameAlert;
 
   @FXML private Button chooseCurrentDirectoryButton;
   @FXML private CheckBox isUsingFileExtensionsCheckBox;
@@ -44,12 +45,27 @@ public class UserInterface extends Application {
 
     updateFilesAlert = new Alert(AlertType.CONFIRMATION);
     updateFilesAlert.setTitle("Confirm Filename Changes");
-    updateFilesAlert.setHeaderText("Are you sure you want to update file(s)?");
+    updateFilesAlert.setHeaderText("Are you sure you want to update the files?");
+
+    invalidFilenameAlert = new Alert(AlertType.WARNING);
+    invalidFilenameAlert.setTitle("Invalid Filename");
   }
 
   @FXML private void initialize() {
     isUsingFileExtensionsCheckBox.setSelected(fileController.getIsUsingFileExtensions());
-    newNameColumn.setOnEditCommit(col -> col.getRowValue().setNewName(col.getNewValue()));
+    newNameColumn.setOnEditCommit(col -> {
+      File file = col.getRowValue();
+      String newName = col.getNewValue();
+
+      if (file.isFilenameValid(newName)) {
+        file.setNewName(newName);
+      } else {
+        invalidFilenameAlert.setHeaderText("The filename \"" + newName +
+                                           "\" contains characters that are not allowed.");
+        invalidFilenameAlert.showAndWait();
+        fileTable.refresh();
+      }
+    });
   }
 
   @FXML protected void toggleFileExtensions(ActionEvent event) {

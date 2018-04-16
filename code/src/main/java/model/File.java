@@ -5,6 +5,8 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class File {
   public static final char FILE_EXTENSION_SYMBOL = '.';
+  public static final String WINDOWS_FILENAME_REGEX = "^[^\\x00-\\x1f\\x7f<>:\"\\/|?*]+$";
+  public static final String UNIX_FILENAME_REGEX = "^[^\\x00/]+$";
 
   private final Path path;
   private boolean isUsingFileExtensions;
@@ -36,11 +38,15 @@ public class File {
 
   public String getFileName() {
     String name = fileName.get();
-
     return isUsingFileExtensions ? name : removeFileExtension(name);
   }
 
   public String getNewName() {
+    String name = newName.get();
+    return isUsingFileExtensions ? name : removeFileExtension(name);
+  }
+
+  public String getNewNameWithExtension() {
     return newName.get();
   }
 
@@ -52,16 +58,17 @@ public class File {
       name += getOriginalFileExtension();
     }
 
-    this.newName.set(name);
+    if (isFilenameValid(name)) {
+      this.newName.set(name);
+    }
   }
 
-  private boolean isFilenameValid(String newName) {
-    // Windows: [0-31 ascii] <>:"\/|?*
-    // Unix: [0 ascii] /
-    // if (System.getProperty("os.name").startsWith("Windows")) {
-
-    // }
-    return true;
+  public boolean isFilenameValid(String newName) {
+    if (System.getProperty("os.name").startsWith("Windows")) {
+      return newName.matches(WINDOWS_FILENAME_REGEX);
+    } else {
+      return newName.matches(UNIX_FILENAME_REGEX);
+    }
   }
 
   private String getOriginalFileExtension() {
